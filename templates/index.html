@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedExam - Medical Practice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --bg-gradient: linear-gradient(135deg, #1e3a5f 0%, #2563eb 50%, #7c3aed 100%);
+            --card-bg: rgba(255, 255, 255, 0.98);
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .logo h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            letter-spacing: -0.02em;
+        }
+
+        .logo p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .hidden { display: none !important; }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .radio-option {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .radio-option input {
+            display: none;
+        }
+
+        .radio-option label {
+            display: block;
+            padding: 1rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .radio-option input:checked + label {
+            border-color: var(--primary);
+            background: rgba(37, 99, 235, 0.05);
+            color: var(--primary);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px 0 rgba(37, 99, 235, 0.23);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
+            border-color: var(--text-secondary);
+        }
+
+        /* Exam Page */
+        .exam-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .progress-container {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .stats {
+            display: flex;
+            gap: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .question-card {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .question-text p {
+            margin-bottom: 0.5rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            border-color: var(--primary-light);
+            transform: translateX(4px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .option.wrong {
+            border-color: var(--error);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .option-marker {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #f1f5f9;
+            font-weight: 700;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+        }
+
+        .option.selected .option-marker {
+            background: var(--primary);
+            color: white;
+        }
+
+        .option.correct .option-marker {
+            background: var(--success);
+            color: white;
+        }
+
+        .option.wrong .option-marker {
+            background: var(--error);
+            color: white;
+        }
+
+        .option-text {
+            flex: 1;
+            font-size: 1rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .nav-buttons .btn {
+            flex: 1;
+        }
+
+        /* Results */
+        .score-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: white;
+            box-shadow: 0 10px 40px rgba(37, 99, 235, 0.4);
+        }
+
+        .score-circle .percent {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .score-circle .label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .result-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .result-stat {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .result-stat .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .result-stat .label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .result-stat.correct .value { color: var(--success); }
+        .result-stat.wrong .value { color: var(--error); }
+
+        .review-item {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .review-question {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .review-answer {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .review-answer.correct {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .review-answer.wrong {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+        }
+
+        /* Loading */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            color: white;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 640px) {
+            .logo h1 { font-size: 2.5rem; }
+            .card { padding: 1.5rem; }
+            .result-stats { grid-template-columns: 1fr; }
+            .nav-buttons { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>🏥 MedExam</h1>
+            <p>Medical Exam Practice Platform</p>
+        </div>
+
+        <!-- Home Page -->
+        <div id="home-page" class="card">
+            <div class="form-group">
+                <label>Select Specialty</label>
+                <select id="specialty-select">
+                    <option value="">Loading...</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Exam Mode</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" name="mode" id="mode-mcq" value="mcq" checked>
+                        <label for="mode-mcq">📝 Multiple Choice</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" name="mode" id="mode-case" value="case">
+                        <label for="mode-case">📋 Case Studies</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Number of Questions</label>
+                <input type="number" id="question-count" value="25" min="5" max="100">
+            </div>
+
+            <button class="btn btn-primary" onclick="startExam()">
+                🚀 Start Exam
+            </button>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="card hidden">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p style="margin-top: 1rem;">Loading questions...</p>
+            </div>
+        </div>
+
+        <!-- Exam Page -->
+        <div id="exam-page" class="card hidden">
+            <div class="exam-header">
+                <div class="progress-container">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span id="question-counter">Question 1/25</span>
+                        <span id="answered-count">0 answered</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="question-container"></div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" id="prev-btn" onclick="prevQuestion()">
+                    ← Previous
+                </button>
+                <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">
+                    Next →
+                </button>
+            </div>
+
+            <button class="btn btn-secondary" style="margin-top: 1rem;" onclick="endExam()">
+                🏁 End Exam
+            </button>
+        </div>
+
+        <!-- Result Page -->
+        <div id="result-page" class="card hidden">
+            <div class="score-circle">
+                <span id="score-percent" class="percent">0%</span>
+                <span class="label">Score</span>
+            </div>
+
+            <div class="result-stats">
+                <div class="result-stat">
+                    <div id="total-questions" class="value">0</div>
+                    <div class="label">Total</div>
+                </div>
+                <div class="result-stat correct">
+                    <div id="correct-count" class="value">0</div>
+                    <div class="label">Correct</div>
+                </div>
+                <div class="result-stat wrong">
+                    <div id="wrong-count" class="value">0</div>
+                    <div class="label">Wrong</div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="restartExam()" style="margin-bottom: 1rem;">
+                🔄 Try Again
+            </button>
+            <button class="btn btn-secondary" onclick="goHome()">
+                🏠 Back to Home
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let questions = [];
+        let currentIndex = 0;
+        let userAnswers = {};
+        let specialty = '31.08.63';
+
+        async function loadSpecialties() {
+            try {
+                const response = await fetch('/api/specialties');
+                const data = await response.json();
+                const select = document.getElementById('specialty-select');
+                select.innerHTML = data.map(s => 
+                    `<option value="${s.code}">${s.name}</option>`
+                ).join('');
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        async function startExam() {
+            specialty = document.getElementById('specialty-select').value || '31.08.63';
+            const limit = parseInt(document.getElementById('question-count').value) || 25;
+            
+            showPage('loading');
+            
+            try {
+                const response = await fetch(`/api/questions?specialty=${specialty}&limit=${limit}`);
+                questions = await response.json();
+                
+                if (questions.length === 0) {
+                    alert('No questions available for this specialty!');
+                    showPage('home-page');
+                    return;
+                }
+                
+                currentIndex = 0;
+                userAnswers = {};
+                renderQuestion();
+                showPage('exam-page');
+            } catch (e) {
+                console.error(e);
+                alert('Error loading questions');
+                showPage('home-page');
+            }
+        }
+
+        function renderQuestion() {
+            const q = questions[currentIndex];
+            const answered = Object.keys(userAnswers).length;
+            
+            document.getElementById('question-counter').textContent = `Question ${currentIndex + 1}/${questions.length}`;
+            document.getElementById('answered-count').textContent = `${answered} answered`;
+            document.getElementById('progress-fill').style.width = `${((currentIndex + 1) / questions.length) * 100}%`;
+            
+            document.getElementById('prev-btn').disabled = currentIndex === 0;
+            document.getElementById('next-btn').textContent = currentIndex === questions.length - 1 ? 'Finish →' : 'Next →';
+            
+            let html = `
+                <div class="question-card">
+                    <div class="question-text">${q.html || 'No question text'}</div>
+                </div>
+                <div class="options">
+            `;
+            
+            q.answers.forEach((ans, i) => {
+                const marker = ans.id || String.fromCharCode(65 + i);
+                const isSelected = userAnswers[q.id] === marker;
+                
+                html += `
+                    <div class="option ${isSelected ? 'selected' : ''}" onclick="selectOption('${marker}')">
+                        <div class="option-marker">${marker}</div>
+                        <div class="option-text">${ans.html || ''}</div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            document.getElementById('question-container').innerHTML = html;
+        }
+
+        function selectOption(marker) {
+            const q = questions[currentIndex];
+            userAnswers[q.id] = marker;
+            renderQuestion();
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                renderQuestion();
+            } else {
+                endExam();
+            }
+        }
+
+        function endExam() {
+            let correct = 0;
+            questions.forEach(q => {
+                const userAns = userAnswers[q.id];
+                if (userAns) {
+                    const correctAns = q.answers.find(a => a.is_correct);
+                    if (correctAns && correctAns.id === userAns) {
+                        correct++;
+                    }
+                }
+            });
+            
+            const percent = Math.round((correct / questions.length) * 100);
+            
+            document.getElementById('score-percent').textContent = `${percent}%`;
+            document.getElementById('total-questions').textContent = questions.length;
+            document.getElementById('correct-count').textContent = correct;
+            document.getElementById('wrong-count').textContent = questions.length - correct;
+            
+            showPage('result-page');
+        }
+
+        function restartExam() {
+            startExam();
+        }
+
+        function goHome() {
+            showPage('home-page');
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.card').forEach(el => el.classList.add('hidden'));
+            document.getElementById(pageId).classList.remove('hidden');
+        }
+
+        loadSpecialties();
+    </script>
+</body>
+</html>
