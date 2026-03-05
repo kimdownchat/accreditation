@@ -1,6 +1,5 @@
 import streamlit as st
 import sqlite3
-import pandas as pd
 import json
 import os
 
@@ -97,17 +96,19 @@ st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     * { font-family: 'Inter', sans-serif; }
-    .stApp { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+    .stApp { background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%); min-height: 100vh; }
     .main-card { background: white; border-radius: 20px; padding: 2rem; margin: 1rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-    .question-card { background: #f8f9fa; border-radius: 15px; padding: 1.5rem; margin: 1rem 0; border-left: 5px solid #667eea; }
+    .question-card { background: #f8f9fa; border-radius: 15px; padding: 1.5rem; margin: 1rem 0; border-left: 5px solid #1e3a5f; }
     .question-text { font-size: 1.1rem; line-height: 1.8; color: #2d3748; }
     .progress-bar { background: #e2e8f0; border-radius: 10px; height: 10px; overflow: hidden; }
-    .progress-fill { background: linear-gradient(90deg, #667eea, #764ba2); height: 100%; transition: width 0.3s ease; }
-    .score-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 15px; padding: 2rem; text-align: center; }
+    .progress-fill { background: linear-gradient(90deg, #1e3a5f, #2d5a87); height: 100%; transition: width 0.3s ease; }
+    .score-card { background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%); color: white; border-radius: 15px; padding: 2rem; text-align: center; }
     .option-btn { background: white; border: 2px solid #e2e8f0; border-radius: 10px; padding: 1rem; margin: 0.5rem 0; text-align: left; transition: all 0.3s ease; }
-    .option-btn:hover { border-color: #667eea; transform: translateX(5px); }
-    .option-selected { border-color: #667eea; background: #f0f4ff; }
-    h1, h2, h3 { color: #2d3748; }
+    .option-btn:hover { border-color: #1e3a5f; transform: translateX(5px); }
+    .option-selected { border-color: #1e3a5f; background: #e8f0f8; }
+    h1, h2, h3 { color: #1e3a5f; }
+    .stButton > button { background: #1e3a5f; color: white; border-radius: 10px; }
+    .stButton > button:hover { background: #2d5a87; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -211,11 +212,10 @@ def exam_page():
         answer_html = answer.get('html', str(answer))
         
         label = f"{answer_id}. {answer_html}"[:150]
-        col = st.columns([1])
-        with col:
-            if st.button(label, key=f"answer_{question['id']}_{i}", use_container_width=True):
-                st.session_state.answers[question['id']] = answer_id
-                st.rerun()
+        
+        if st.button(label, key=f"answer_{question['id']}_{i}", use_container_width=True):
+            st.session_state.answers[question['id']] = answer_id
+            st.rerun()
         
         if current_answer == answer_id:
             st.markdown(f":blue[✓ Selected: {answer_id}]")
